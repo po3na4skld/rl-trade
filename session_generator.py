@@ -1,4 +1,5 @@
 from environments import QLearningEnvironment, ReinforceEnvironment
+from visualization import *
 import numpy as np
 
 
@@ -47,17 +48,20 @@ def generate_session(env, alg_type, train=True):
         return s, a, done, total_reward
 
 
-def run_test_session(epochs, alg_type, save=True):
-    data_file = 'stocks/dataset.csv'
+def run_test_session(epochs, alg_type, save=True, show=True):
+    data_file = 'stocks/train_data.csv'
     if alg_type == 'reinforce':
         env = ReinforceEnvironment(data_file, 2000, gamma=0.99)
 
         for ep in range(epochs):
             print('epoch: {} starts'.format(ep + 1))
-            rewards = [generate_session(env, alg_type, train=True) for _ in range(100)]
+            rewards = [generate_session(env, alg_type, train=True) for _ in range(10)]
             print('epoch {} ends | Mean reward: {}'.format(ep + 1, np.mean(rewards)))
         if save:
             env.m.model.save_weights('reinforce_weights.h5')
+        if show:
+            reward_graph(rewards)
+
     else:
         env = QLearningEnvironment(20000, data_file, gamma=0.99, epsilon=0.01, model_type='NN')
 
@@ -73,4 +77,4 @@ def run_test_session(epochs, alg_type, save=True):
 if __name__ == '__main__':
     alg_types = ['reinforce',
                  'qlearning']
-    run_test_session(20, alg_type=alg_types[0])
+    run_test_session(10, alg_type=alg_types[0], save=False)
