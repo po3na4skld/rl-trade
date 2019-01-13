@@ -23,15 +23,8 @@ def create_price_frame(df):
 
 
 def preprocess_data(data_set_file):
-    state_frame = pd.read_csv(data_set_file)
-
-    state_frame.index = pd.to_datetime(state_frame['Date'])
-    state_frame.index.name = 'dates'
-    state_frame = state_frame.drop('Date', axis=1)
-
+    state_frame = pd.read_csv(data_set_file, index_col='Date')
     state_frame.dropna(inplace=True)
-
     state_frame['AO'] = state_frame['AO'].pct_change()
-
     state_frame.dropna(inplace=True)
     return state_frame

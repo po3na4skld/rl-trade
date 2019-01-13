@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4c451727-68e1-41d6-a083-5578a7ef3af2" name="Default Changelist" comment="">
+    <list default="true" id="4c451727-68e1-41d6-a083-5578a7ef3af2" name="Default Changelist" comment="add graph">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/session_generator.py" beforeDir="false" afterPath="$PROJECT_DIR$/session_generator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stocks/dataset.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.ipynb_checkpoints/Untitled-checkpoint.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_handler.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_handler.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -17,21 +17,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/environments.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="75">
+            <state relative-caret-position="30">
               <caret line="5" selection-start-line="5" selection-end-line="5" />
-              <folding>
-                <element signature="e#0#4#0" expanded="true" />
-                <element signature="e#240#4126#0" />
-                <element signature="e#138#3339#0" />
-                <element signature="e#198#1113#0" />
-                <element signature="e#1144#1434#0" />
-                <element signature="e#1472#1848#0" />
-                <element signature="e#1886#2858#0" />
-                <element signature="e#2901#3090#0" />
-                <element signature="e#3127#3200#0" />
-                <element signature="e#3230#3234#0" />
-                <element signature="e#3268#3339#0" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -39,28 +26,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/agents.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="300">
+            <state relative-caret-position="3840">
               <caret line="260" selection-start-line="260" selection-end-line="260" />
-              <folding>
-                <element signature="e#0#63#0" expanded="true" />
-                <element signature="e#165#435#0" />
-                <element signature="e#516#549#0" />
-                <element signature="e#25#3155#0" />
-                <element signature="e#3182#5395#0" />
-                <element signature="e#5424#8326#0" />
-              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/session_generator.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="435">
-              <caret line="62" column="33" lean-forward="true" selection-start-line="62" selection-start-column="33" selection-end-line="62" selection-end-column="33" />
-              <folding>
-                <element signature="e#0#4#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="195">
+              <caret line="15" selection-start-line="15" selection-end-line="15" />
             </state>
           </provider>
         </entry>
@@ -68,32 +44,22 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/signal_generation.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="75">
+            <state relative-caret-position="30">
               <caret line="5" selection-start-line="5" selection-end-line="5" />
               <folding>
                 <element signature="e#0#85#0" expanded="true" />
-                <element signature="e#30#550#0" />
-                <element signature="e#597#694#0" />
-                <element signature="e#732#1154#0" />
-                <element signature="e#1183#1288#0" />
-                <element signature="e#1317#1690#0" />
-                <element signature="e#1720#1834#0" />
-                <element signature="e#2094#2406#0" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/data_handler.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="37" selection-start-line="37" selection-end-line="37" />
+            <state relative-caret-position="435">
+              <caret line="29" column="22" lean-forward="true" selection-start-line="29" selection-start-column="22" selection-end-line="29" selection-end-column="22" />
               <folding>
                 <element signature="e#0#29#0" expanded="true" />
-                <element signature="e#102#469#0" />
-                <element signature="e#460#554#0" />
-                <element signature="e#611#955#0" />
               </folding>
             </state>
           </provider>
@@ -103,7 +69,7 @@
         <entry file="file://$PROJECT_DIR$/visualization.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="150">
-              <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
+              <caret line="10" selection-start-line="10" selection-end-line="10" />
             </state>
           </provider>
         </entry>
@@ -141,14 +107,14 @@
         <option value="$PROJECT_DIR$/Two_Agents_AI/buy_sell_environment.py" />
         <option value="$PROJECT_DIR$/model.py" />
         <option value="$PROJECT_DIR$/koshman.py" />
-        <option value="$PROJECT_DIR$/data_handler.py" />
         <option value="$PROJECT_DIR$/q_learning_env.py" />
         <option value="$PROJECT_DIR$/environments.py" />
         <option value="$PROJECT_DIR$/reinforce_env.py" />
         <option value="$PROJECT_DIR$/signal_generation.py" />
         <option value="$PROJECT_DIR$/agents.py" />
-        <option value="$PROJECT_DIR$/visualization.py" />
         <option value="$PROJECT_DIR$/session_generator.py" />
+        <option value="$PROJECT_DIR$/visualization.py" />
+        <option value="$PROJECT_DIR$/data_handler.py" />
       </list>
     </option>
   </component>
@@ -354,30 +320,97 @@
       <option name="presentableId" value="Default" />
       <updated>1544042918917</updated>
     </task>
+    <task id="LOCAL-00001" summary="add graph">
+      <created>1547243540374</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1547243540374</updated>
+    </task>
+    <task id="LOCAL-00002" summary="add graph">
+      <created>1547243730655</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1547243730655</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
   </component>
   <component name="ToolWindowManager">
     <frame x="67" y="25" width="1853" height="1055" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" weight="0.25" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.2548596" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49945354" weight="0.2537797" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Terminal" order="8" />
-      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32937366" />
+      <window_info anchor="bottom" id="Version Control" order="7" weight="0.32937366" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.32937366" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50054646" side_tool="true" weight="0.2537797" />
       <window_info anchor="bottom" id="Python Console" order="10" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
     </layout>
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="RECENTLY_FILTERED_USER_GROUPS">
+                <collection />
+              </option>
+              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+                <collection />
+              </option>
+              <option name="COLUMN_ORDER">
+                <list>
+                  <option value="0" />
+                  <option value="1" />
+                  <option value="2" />
+                  <option value="3" />
+                </list>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list />
+          </value>
+        </entry>
+        <entry key="User">
+          <value>
+            <list />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="add graph" />
+    <option name="LAST_COMMIT_MESSAGE" value="add graph" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/currency.py" />
@@ -436,38 +469,28 @@
     <entry file="file://$PROJECT_DIR$/model.py" />
     <entry file="file://$PROJECT_DIR$/main.py" />
     <entry file="file://$PROJECT_DIR$/koshman.py" />
-    <entry file="file://$PROJECT_DIR$/q_learning_env.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/reinforce_env.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data_handler.py">
+    <entry file="file://$PROJECT_DIR$/q_learning_env.py" />
+    <entry file="file://$PROJECT_DIR$/reinforce_env.py" />
+    <entry file="file://$PROJECT_DIR$/environments.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="37" selection-start-line="37" selection-end-line="37" />
-          <folding>
-            <element signature="e#0#29#0" expanded="true" />
-            <element signature="e#102#469#0" />
-            <element signature="e#460#554#0" />
-            <element signature="e#611#955#0" />
-          </folding>
+        <state relative-caret-position="30">
+          <caret line="5" selection-start-line="5" selection-end-line="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/agents.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3840">
+          <caret line="260" selection-start-line="260" selection-end-line="260" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/signal_generation.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
+        <state relative-caret-position="30">
           <caret line="5" selection-start-line="5" selection-end-line="5" />
           <folding>
             <element signature="e#0#85#0" expanded="true" />
-            <element signature="e#30#550#0" />
-            <element signature="e#597#694#0" />
-            <element signature="e#732#1154#0" />
-            <element signature="e#1183#1288#0" />
-            <element signature="e#1317#1690#0" />
-            <element signature="e#1720#1834#0" />
-            <element signature="e#2094#2406#0" />
           </folding>
         </state>
       </provider>
@@ -475,51 +498,23 @@
     <entry file="file://$PROJECT_DIR$/visualization.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="150">
-          <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/agents.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="260" selection-start-line="260" selection-end-line="260" />
-          <folding>
-            <element signature="e#0#63#0" expanded="true" />
-            <element signature="e#165#435#0" />
-            <element signature="e#516#549#0" />
-            <element signature="e#25#3155#0" />
-            <element signature="e#3182#5395#0" />
-            <element signature="e#5424#8326#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/environments.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" selection-start-line="5" selection-end-line="5" />
-          <folding>
-            <element signature="e#0#4#0" expanded="true" />
-            <element signature="e#240#4126#0" />
-            <element signature="e#138#3339#0" />
-            <element signature="e#198#1113#0" />
-            <element signature="e#1144#1434#0" />
-            <element signature="e#1472#1848#0" />
-            <element signature="e#1886#2858#0" />
-            <element signature="e#2901#3090#0" />
-            <element signature="e#3127#3200#0" />
-            <element signature="e#3230#3234#0" />
-            <element signature="e#3268#3339#0" />
-          </folding>
+          <caret line="10" selection-start-line="10" selection-end-line="10" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/session_generator.py">
       <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="15" selection-start-line="15" selection-end-line="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data_handler.py">
+      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="435">
-          <caret line="62" column="33" lean-forward="true" selection-start-line="62" selection-start-column="33" selection-end-line="62" selection-end-column="33" />
+          <caret line="29" column="22" lean-forward="true" selection-start-line="29" selection-start-column="22" selection-end-line="29" selection-end-column="22" />
           <folding>
-            <element signature="e#0#4#0" expanded="true" />
+            <element signature="e#0#29#0" expanded="true" />
           </folding>
         </state>
       </provider>
