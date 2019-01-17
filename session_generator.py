@@ -1,80 +1,76 @@
 from environments import QLearningEnvironment, ReinforceEnvironment
-from visualization import *
 import numpy as np
 
 
-def generate_session(env, alg_type, train=True):
+def generate_session(env, agent):
 
-    if alg_type == 'reinforce':
+    if agent == 'reinforce':
         states, actions, rewards = [], [], []
         env.reset()
-        s = env.agent_input
+        s = env.current_state
         for i in range(env.ticks):
-            action_probs = env.m.get_action_proba(s)
 
-            a = np.random.choice(env.action_space, 1, p=action_probs)[0]
-
+            action_proba = env.agent.get_action_proba(s)
+            a = np.random.choice(env.action_space, 1, p=action_proba)[0]
             next_s, r, done = env.step(a)
 
             states.append(s)
             actions.append(a)
             rewards.append(r)
 
+            env.agent.train_step(states, actions, rewards)
             s = next_s
+
             if done:
                 print(env)
                 break
-        if train:
-            env.m.train_step(states, actions, rewards)
 
         return sum(rewards)
     else:
         env.reset()
         total_reward = 0
-        s = env.agent_input
+        s = env.current_state
         for t in range(env.ticks):
             a = env.get_action()
             next_s, r, done = env.step(a)
-            if train:
-                env.m_buy.sess.run(env.m_buy.loss, {env.m_buy.states_ph: [s],
-                                                    env.m_buy.actions_ph: [a],
-                                                    env.m_buy.rewards_ph: [r],
-                                                    env.m_buy.next_states_ph: [next_s],
-                                                    env.m_buy.is_done_ph: [done]})
+            env.agent.sess.run(env.agent.loss, {env.agent.states_ph: [s],
+                                                env.agent.actions_ph: [a],
+                                                env.agent.rewards_ph: [r],
+                                                env.agent.next_states_ph: [next_s],
+                                                env.agent.done_ph: [done]})
             total_reward += r
             s = next_s
+
             if done:
+                print(env)
                 break
-        return s, a, done, total_reward
+
+        return total_reward
 
 
-def run_test_session(epochs, alg_type, save=True, show=True):
+def run_train_session(epochs, agent, starting_money=20000, gamma=0.99, epsilon=0.1, save=True):
+
     data_file = 'stocks/train_data.csv'
-    if alg_type == 'reinforce':
-        env = ReinforceEnvironment(data_file, 2000, gamma=0.99)
 
-        for ep in range(epochs):
-            print('epoch: {} starts'.format(ep + 1))
-            rewards = [generate_session(env, alg_type, train=True) for _ in range(10)]
-            print('epoch {} ends | Mean reward: {}'.format(ep + 1, np.mean(rewards)))
-        if save:
-            env.m.model.save_weights('reinforce_weights.h5')
-        if show:
-            reward_graph(rewards)
-
+    if agent == 'reinforce':
+        env = ReinforceEnvironment(data_file, starting_money, gamma=gamma)
+        model_name = 'reinforce.model'
+    elif agent == 'q_learning_NN':
+        env = QLearningEnvironment(data_file, starting_money, gamma=gamma, epsilon=epsilon, model_type=agent[:-2])
+        model_name = agent + '.model'
     else:
-        env = QLearningEnvironment(20000, data_file, gamma=0.99, epsilon=0.01, model_type='NN')
+        env = QLearningEnvironment(data_file, starting_money, gamma=gamma, epsilon=epsilon, model_type=agent[:-2])
+        model_name = agent + '.model'
 
-        for ep in range(epochs):
-            print('epoch: {} starts'.format(ep + 1))
-            session = [generate_session(env, alg_type, train=True) for _ in range(10)]
-            print('epoch {} ends | Total reward: {}'.format(ep + 1, session[-1][3]))
-            print(env)
-        if save:
-            env.m.model.save_weights('q_learning_weights.h5')
+    for ep in range(1, epochs + 1):
+        print('epoch: {} starts'.format(ep))
+        rewards = [generate_session(env, agent) for _ in range(100)]
+        print('epoch {} ends.| mean reward: {}'.format(ep, np.mean(rewards)))
+
+    if save:
+        env.model.save('./models/' + model_name)
 
 
 if __name__ == '__main__':
-    alg_types = ['reinforce',
-                 'qlearning']
-    run_test_session(10, alg_type=alg_types[0], save=False)
+    agents = ['reinforce', 'q_learning_NN', 'q_learning_LSTM']
+    run_train_session(10, agent=agents[1], starting_money=10000, save=True)

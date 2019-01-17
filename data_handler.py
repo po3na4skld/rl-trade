@@ -3,6 +3,12 @@ import pandas as pd
 import numpy as np
 
 
+def states_iterator(df):
+    ticks = len(df)
+    iterator = iter(df.values)
+    return iterator, ticks
+
+
 def create_sequences(df):
     seq_len = 20
     sequential_data = []
@@ -16,15 +22,15 @@ def create_sequences(df):
     return iterator, ticks
 
 
-def create_price_frame(df):
-    price_close = pd.Series(df['Close'])
-    iterator = iter(price_close)
+def close_price_iterator(df):
+    close_price = pd.Series(df['Close'])
+    iterator = iter(close_price)
     return iterator
 
 
 def preprocess_data(data_set_file):
-    state_frame = pd.read_csv(data_set_file, index_col='Date')
-    state_frame.dropna(inplace=True)
-    state_frame['AO'] = state_frame['AO'].pct_change()
-    state_frame.dropna(inplace=True)
-    return state_frame
+    data = pd.read_csv(data_set_file, index_col='dates')
+    data.index = pd.to_datetime(data.index)
+    data.sort_index(inplace=True)
+    data.drop_duplicates(inplace=True)
+    return data

@@ -1,4 +1,4 @@
-from keras.layers import Dense, Activation, InputLayer, Dropout, CuDNNLSTM, BatchNormalization, Input, Lambda
+from keras.layers import Dense, Activation, InputLayer, Dropout, CuDNNLSTM, BatchNormalization, Input
 from keras.models import Sequential, Model
 from collections import deque
 import tensorflow as tf
@@ -18,10 +18,6 @@ def property_with_check(input_fn):
     return check_attr
 
 
-def Concatenation(inputs):
-    return tf.concat(inputs, axis=-1)
-
-
 class Reinforce:
 
     def __init__(self, action_space, state_dim, gamma, lr=1e-4):
@@ -36,7 +32,7 @@ class Reinforce:
         self.states_ph = tf.placeholder(tf.float32, shape=(None,) + self.state_dim)
         self.actions_ph = tf.placeholder(tf.int32, shape=[None])
         self.cumulative_rewards_ph = tf.placeholder(tf.float32, shape=[None])
-        self.is_done_ph = tf.placeholder(tf.bool, shape=[None])
+        self.done_ph = tf.placeholder(tf.bool, shape=[None])
 
         self.model = self._build_model()
         self._loss = None
@@ -47,15 +43,15 @@ class Reinforce:
         self.sess.run(init)
 
     def _build_model(self):
-        model = Sequential(name='Dense')
+        model = Sequential(name='NN')
         model.add(InputLayer(self.state_dim))
 
         model.add(Dense(100))
-        model.add(Dropout(0.3))
+        model.add(Dropout(0.25))
         model.add(Activation('relu'))
 
         model.add(Dense(100))
-        model.add(Dropout(0.3))
+        model.add(Dropout(0.25))
         model.add(Activation('relu'))
 
         model.add(Dense(self.n_actions))
@@ -84,10 +80,10 @@ class Reinforce:
     def loss(self):
         indices = tf.stack([tf.range(tf.shape(self.log_policy)[0]), self.actions_ph], axis=-1)
         log_policy_for_actions = tf.gather_nd(self.log_policy, indices)
-        J = tf.reduce_mean(log_policy_for_actions * self.cumulative_rewards_ph)
+        loss = tf.reduce_mean(log_policy_for_actions * self.cumulative_rewards_ph)
         entropy = -tf.reduce_mean(self.policy * self.log_policy, 1)
 
-        self._loss = -J - 0.1 * entropy
+        self._loss = -loss - 0.1 * entropy
         return self._loss
 
     @property_with_check
@@ -109,9 +105,8 @@ class Reinforce:
                                   self.actions_ph: _actions,
                                   self.cumulative_rewards_ph: _cumulative_rewards})
 
-    @staticmethod
-    def get_summary(model):
-        model.summary()
+    def get_summary(self):
+        self.model.summary()
 
 
 class QLearningNN:
@@ -124,12 +119,13 @@ class QLearningNN:
         self.lr = lr
         self.sess = tf.Session()
         self.model = self._build_model()
+        self.model.name = 'NN'
 
         self.states_ph = tf.placeholder(tf.float32, shape=(None, ) + self.state_dim)
         self.actions_ph = tf.placeholder(tf.int32, shape=[None])
         self.rewards_ph = tf.placeholder(tf.float32, shape=[None])
         self.next_states_ph = tf.placeholder(tf.float32, shape=(None, ) + self.state_dim)
-        self.is_done_ph = tf.placeholder(tf.bool, shape=[None])
+        self.done_ph = tf.placeholder(tf.bool, shape=[None])
 
         init = tf.global_variables_initializer()
         self.sess.run(init)
@@ -138,15 +134,15 @@ class QLearningNN:
         self._optimizer = None
 
     def _build_model(self):
-        model = Sequential(name='Dense')
+        model = Sequential()
         model.add(InputLayer(self.state_dim))
 
         model.add(Dense(100))
-        model.add(Dropout(0.3))
+        model.add(Dropout(0.25))
         model.add(Activation('relu'))
 
         model.add(Dense(100))
-        model.add(Dropout(0.3))
+        model.add(Dropout(0.25))
         model.add(Activation('relu'))
 
         model.add(Dense(self.n_actions))
@@ -154,20 +150,16 @@ class QLearningNN:
 
         return model
 
-    @staticmethod
-    def get_summary(model):
-        model.summary()
+    def get_summary(self):
+        self.model.summary()
 
     @property_with_check
     def loss(self):
-        pred_q_val = self.model(self.states_ph)
-        pred_q_val_for_act = tf.reduce_sum(pred_q_val * tf.one_hot(self.actions_ph, self.n_actions), axis=1)
-        pred_next_q_val = self.model(self.next_states_ph)
-        next_state_val = tf.reduce_sum(pred_next_q_val * tf.one_hot(self.actions_ph, self.n_actions), axis=1)
-        target_q_val_for_act = self.rewards_ph + self.gamma * tf.reduce_max(next_state_val)
-        target_q_val_for_act = tf.where(self.is_done_ph, self.rewards_ph, target_q_val_for_act)
-        loss = (pred_q_val_for_act - tf.stop_gradient(target_q_val_for_act))**2
-        loss = tf.reduce_mean(loss)
+        one_hot_action = tf.one_hot(self.actions_ph, self.n_actions)
+        q_value = tf.reduce_sum(self.model(self.states_ph) * one_hot_action, axis=1)
+        next_q_value = tf.reduce_sum(self.model(self.next_states_ph) * one_hot_action, axis=1)
+        target = self.rewards_ph + self.gamma * tf.reduce_max(next_q_value)
+        loss = tf.reduce_mean(tf.square(target - q_value))
         self._loss = loss
         return self._loss
 
@@ -181,22 +173,21 @@ class QLearningNN:
 
 class QLearningLSTM:
 
-    def __init__(self, action_space, state_dim, portfolio_shape, gamma, epsilon, lr=1e-4):
+    def __init__(self, action_space, state_dim, gamma, epsilon, lr=1e-4):
         self.n_actions = action_space
         self.state_dim = state_dim
-        self.portfolio_shape = portfolio_shape
         self.gamma = gamma
         self.epsilon = epsilon
         self.lr = lr
         self.sess = tf.Session()
         self.model = self._build_model()
+        self.model.name = 'LSTM'
 
         self.states_ph = tf.placeholder(tf.float32, shape=(None, ) + self.state_dim)
         self.actions_ph = tf.placeholder(tf.int32, shape=[None])
         self.rewards_ph = tf.placeholder(tf.float32, shape=[None])
         self.next_states_ph = tf.placeholder(tf.float32, shape=(None, ) + self.state_dim)
-        self.is_done_ph = tf.placeholder(tf.bool, shape=[None])
-        self.portfolio_ph = tf.placeholder(tf.float32, shape=(None, ) + self.portfolio_shape)
+        self.done_ph = tf.placeholder(tf.bool, shape=[None])
 
         init = tf.global_variables_initializer()
         self.sess.run(init)
@@ -206,49 +197,38 @@ class QLearningLSTM:
 
     def _build_model(self):
 
-        input_1 = Input(self.state_dim)
+        inputs = Input(self.state_dim)
 
-        line_one = CuDNNLSTM(128, return_sequences=True)(input_1)
-        line_one = Dropout(0.2)(line_one)
+        line_one = CuDNNLSTM(128, return_sequences=True)(inputs)
         line_one = BatchNormalization()(line_one)
 
         line_one = CuDNNLSTM(128, return_sequences=True)(line_one)
-        line_one = Dropout(0.2)(line_one)
         line_one = BatchNormalization()(line_one)
 
         line_one = CuDNNLSTM(128)(line_one)
-        line_one = Dropout(0.2)(line_one)
         line_one = BatchNormalization()(line_one)
 
-        input_2 = Input((2, ))
-
-        con = Lambda(Concatenation)([line_one, input_2])
-
-        con = Dense(32)(con)
-        con = Dropout(0.2)(con)
+        con = Dense(100)(line_one)
+        con = Dropout(0.25)(con)
         con = Activation('relu')(con)
 
         con = Dense(self.n_actions)(con)
         output = Activation('linear')(con)
 
-        model = Model(inputs=[input_1, input_2], outputs=output, name='QlearningLSTM')
+        model = Model(inputs=inputs, outputs=output)
 
         return model
 
-    @staticmethod
-    def get_summary(model):
-        model.summary()
+    def get_summary(self):
+        self.model.summary()
 
     @property_with_check
     def loss(self):
-        pred_q_val = self.model([self.states_ph, self.portfolio_ph])
-        pred_q_val_for_act = tf.reduce_sum(pred_q_val * tf.one_hot(self.actions_ph, self.n_actions), axis=1)
-        pred_next_q_val = self.model([self.next_states_ph, self.portfolio_ph])
-        next_state_val = tf.reduce_sum(pred_next_q_val * tf.one_hot(self.actions_ph, self.n_actions), axis=1)
-        target_q_val_for_act = self.rewards_ph + self.gamma * tf.reduce_max(next_state_val)
-        target_q_val_for_act = tf.where(self.is_done_ph, self.rewards_ph, target_q_val_for_act)
-        loss = (pred_q_val_for_act - tf.stop_gradient(target_q_val_for_act))**2
-        loss = tf.reduce_mean(loss)
+        one_hot_action = tf.one_hot(self.actions_ph, self.n_actions)
+        q_value = tf.reduce_sum(self.model(self.states_ph) * one_hot_action, axis=1)
+        next_q_value = tf.reduce_sum(self.model(self.next_states_ph) * one_hot_action, axis=1)
+        target = self.rewards_ph + self.gamma * tf.reduce_max(next_q_value)
+        loss = tf.reduce_mean(tf.square(target - q_value))
         self._loss = loss
         return self._loss
 
