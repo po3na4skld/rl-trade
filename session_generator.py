@@ -48,7 +48,7 @@ def generate_session(env, agent):
         return total_reward
 
 
-def run_train_session(epochs, agent, starting_money=20000, gamma=0.99, epsilon=0.1, save=True):
+def run_train_session(epochs, agent, starting_money=20000, gamma=0.99, epsilon=0.5, save=True):
 
     data_file = 'stocks/train_data.csv'
 
@@ -65,6 +65,7 @@ def run_train_session(epochs, agent, starting_money=20000, gamma=0.99, epsilon=0
     for ep in range(1, epochs + 1):
         print('epoch: {} starts'.format(ep))
         rewards = [generate_session(env, agent) for _ in range(100)]
+        env.agent.epsilon *= 0.99
         print('epoch {} ends.| mean reward: {}'.format(ep, np.mean(rewards)))
 
     if save:
