@@ -31,6 +31,8 @@ def generate_session(env, agent):
         total_reward = 0
         s = env.current_state
         for t in range(env.ticks):
+            if t % 100 == 0:
+                print('progress: {:.2f}'.format((t * 100) / env.ticks))
             a = env.get_action()
             next_s, r, done = env.step(a)
             env.agent.sess.run(env.agent.loss, {env.agent.states_ph: [s],
