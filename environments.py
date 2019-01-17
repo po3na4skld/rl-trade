@@ -62,7 +62,7 @@ class QLearningEnvironment(Environment):
 
     def get_action(self):
         q_values = self.model.predict(self.current_state[None])[0]
-        prob = np.random.choice([True, False], p=[1-self.model.epsilon, self.model.epsilon])
+        prob = np.random.choice([True, False], p=[1-self.agent.epsilon, self.agent.epsilon])
         action = np.argmax(q_values) if prob else np.random.choice(self.action_space)
         return action
 
