@@ -103,6 +103,13 @@ class QLearningEnvironment(Environment):
             reward = 0
             self.update_state()
 
+        if reward > 0:
+            reward = 1
+        elif reward < 0:
+            reward = -1
+        else:
+            reward = 0
+
         return self.current_state, reward, self.done
 
 
@@ -141,17 +148,30 @@ class ReinforceEnvironment(Environment):
 
         if action == 1:
             buy_count = (self.money * 0.3) / self.current_price
-            self.actions[action](buy_count, self.current_price)
-            reward = 0
+            if buy_count * self.current_price > self.money:
+                reward = -1
+            else:
+                self.actions[action](buy_count, self.current_price)
+                reward = 0
             self.update_state()
         elif action == 2:
-            profit = sum([self.current_price * v for v in self.orders.values()]) - \
-                     sum([k * v for k, v in self.orders.items()])
-            self.actions[action](self.current_price)
-            reward = profit
+            if self.orders:
+                profit = sum([self.current_price * v for v in self.orders.values()]) - \
+                         sum([k * v for k, v in self.orders.items()])
+                self.actions[action](self.current_price)
+                reward = profit
+            else:
+                reward = -1
             self.update_state()
         else:
             reward = 0
             self.update_state()
+
+        if reward > 0:
+            reward = 1
+        elif reward < 0:
+            reward = -1
+        else:
+            reward = 0
 
         return self.current_state, reward, self.done

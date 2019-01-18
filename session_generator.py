@@ -1,4 +1,5 @@
 from environments import QLearningEnvironment, ReinforceEnvironment
+from visualization import *
 import numpy as np
 
 
@@ -29,11 +30,14 @@ def generate_session(env, agent):
     else:
         env.reset()
         total_reward = 0
+        buys, sells = [], []
         s = env.current_state
         for t in range(env.ticks):
-            if t % 100 == 0:
-                print('progress: {:.2f}'.format((t * 100) / env.ticks))
             a = env.get_action()
+            if a == 1:
+                buys.append(np.asarray([env.df.iloc[t].name, env.current_price]))
+            elif a == 2:
+                sells.append(np.asarray([env.df.iloc[t].name, env.current_price]))
             next_s, r, done = env.step(a)
             env.agent.sess.run(env.agent.loss, {env.agent.states_ph: [s],
                                                 env.agent.actions_ph: [a],
@@ -47,10 +51,10 @@ def generate_session(env, agent):
                 print(env)
                 break
 
-        return total_reward
+        return total_reward, np.asarray(buys), np.asarray(sells)
 
 
-def run_train_session(epochs, agent, starting_money=20000, gamma=0.99, epsilon=0.5, save=True):
+def run_train_session(epochs, agent, starting_money=20000, gamma=0.99, epsilon=0.5, save=True, plot=False):
 
     data_file = 'stocks/train_data.csv'
 
@@ -66,9 +70,16 @@ def run_train_session(epochs, agent, starting_money=20000, gamma=0.99, epsilon=0
 
     for ep in range(1, epochs + 1):
         print('epoch: {} starts'.format(ep))
-        rewards = [generate_session(env, agent) for _ in range(100)]
+        epoch_results = np.asarray([generate_session(env, agent) for _ in range(100)])
+        rewards = epoch_results[:, 0]
+        buys = epoch_results[:, 1]
+        sells = epoch_results[:, 2]
         env.agent.epsilon *= 0.85
         print('epoch {} ends.| mean reward: {}'.format(ep, np.mean(rewards)))
+
+        if plot:
+            reward_graph(rewards, ep)
+            buy_sell_graph(buys, sells, env.df['Close'], ep)
 
     if save:
         env.model.save('./models/' + model_name)
@@ -76,4 +87,4 @@ def run_train_session(epochs, agent, starting_money=20000, gamma=0.99, epsilon=0
 
 if __name__ == '__main__':
     agents = ['reinforce', 'q_learning_NN', 'q_learning_LSTM']
-    run_train_session(10, agent=agents[1], starting_money=10000, save=True)
+    run_train_session(10, agent=agents[1], starting_money=10000, save=False, plot=True)
