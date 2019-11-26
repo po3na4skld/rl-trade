@@ -1,4 +1,4 @@
-from environments import QLearningEnvironment, ReinforceEnvironment
+from environment import Environment
 from visualization import *
 import numpy as np
 

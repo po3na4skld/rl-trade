@@ -1,37 +1,4 @@
-from keras.layers import Dense, Activation, InputLayer, CuDNNLSTM, BatchNormalization
-from keras.models import Sequential
-from keras.optimizers import Adam
 import numpy as np
-
-
-def awesome_model():
-    model = Sequential()
-
-    model.add(InputLayer((1, 20)))
-
-    model.add(CuDNNLSTM(128, return_sequences=True))
-    model.add(BatchNormalization())
-
-    model.add(CuDNNLSTM(128))
-    model.add(BatchNormalization())
-
-    model.add(Dense(50))
-    model.add(Activation('relu'))
-
-    model.add(Dense(1))
-    model.add(Activation('sigmoid'))
-
-    opt = Adam(lr=0.004)
-    model.load_weights('AwesomeOscillator.model')
-    model.compile(loss='binary_crossentropy', optimizer=opt, metrics=['accuracy'])
-
-    global ao_model
-    ao_model = model
-
-
-def awesome_oscillator_prediction(current_data):
-    ao_signal = ao_model.predict(current_data[:, 5].reshape(1, 1, 20))
-    return ao_signal
 
 
 def acceleration_signals(current_data):
@@ -81,13 +48,9 @@ def macd_signals(current_data):
 
 def generate_signals(current_data, buy_mode):
     state = [acceleration_signals(current_data),
-             np.round(awesome_oscillator_prediction(current_data)[0][0]),
              rsi_signals(current_data),
              mfi_signals(current_data),
              macd_signals(current_data),
              buy_mode]
 
-    return np.asarray(state).reshape(6, )
-
-
-awesome_model()
+    return np.asarray(state).reshape(5, )

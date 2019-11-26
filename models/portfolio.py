@@ -1,3 +1,9 @@
+"""
+
+Portfolio object contains amount of money, list of opened orders, list of closed orders, current stocks
+With Portfolio you can open and close orders (perform trading).
+
+"""
 
 
 class Portfolio:
@@ -7,34 +13,37 @@ class Portfolio:
         self.money_at_start = bankroll
         self.bankroll = bankroll
 
-        self.opened_orders = {}
+        self.opened_orders = []
         self.order_id = 0
         self.closed_orders = []
 
-        self.portfolio = {}
+        self.stocks = {}
 
-    def open_order(self, currency, count, value, buy_price):
-        self.opened_orders[self.order_id] = {'currency': currency, 'count': count,
-                                             'value': value, 'buy_price': buy_price}
+    def open_order(self, currency, count, value):
+        self.opened_orders.append({'currency': currency, 'count': count,
+                                   'value': value, 'buy_price': count * value})
 
-        self.bankroll -= buy_price
+        self.bankroll -= count * value
         self.order_id += 1
 
-        if currency in self.portfolio.keys():
-            self.portfolio[currency]['count'] += count
+        if currency in self.stocks.keys():
+            self.stocks[currency]['count'] += count
         else:
-            self.portfolio[currency] = {'count': count}
+            self.stocks[currency] = {'count': count}
 
-    def close_order(self, order_id, sell_price):
-        if order_id not in self.opened_orders.keys():
-            raise KeyError(f"Order with {order_id} does not exist.")
+        return 0
 
-        closed_order = self.opened_orders.pop(order_id)
+    def close_order(self, sell_price):
+        if not self.opened_orders:
+            pass
+
+        closed_order = self.opened_orders.pop(0)
         closed_order['sell_price'] = sell_price
         self.closed_orders.append(closed_order)
 
         self.bankroll += sell_price
-        self.portfolio[closed_order['currency']]['count'] -= closed_order['count']
+        self.stocks[closed_order['currency']]['count'] -= closed_order['count']
+        return sell_price - closed_order['buy_price']
 
     def check_balance(self, value):
         return True if self.bankroll > value else False
@@ -43,4 +52,4 @@ class Portfolio:
         return self.money_at_start - self.bankroll
 
     def __str__(self):
-        return f"Portfolio: {self.portfolio}\nBankroll: {self.bankroll}"
+        return f"Stocks: {self.stocks}\nBankroll: {self.bankroll}\nCurrent profit {self.get_profit()}"

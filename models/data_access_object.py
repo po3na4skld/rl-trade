@@ -6,7 +6,7 @@ from collections import deque
 
 class DataAccessObject:
 
-    def __init__(self, data_file, index_col=None, names=(), sort_idx=True, drop_duplicate=True):
+    def __init__(self, data_file, index_col=None, names=(), sort_idx=True, drop_duplicate=True, seq_len=20):
         if index_col and index_col in names:
             raise ValueError("Index column can't be in DataFrame columns")
 
@@ -26,6 +26,7 @@ class DataAccessObject:
 
         self.ticks = len(self.df)
         self.close_price_iterator = self.get_col_iterator('Close')
+        self.sequential_data, self.sequential_ticks = self.get_sequential_data(seq_len)
 
     def sample(self, n=10):
         return self.df.sample(n)
