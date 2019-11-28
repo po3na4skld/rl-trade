@@ -17,7 +17,7 @@ class Portfolio:
         self.order_id = 0
         self.closed_orders = []
 
-        self.stocks = {}
+        self.coins = {}
 
     def open_order(self, currency, count, value):
         self.opened_orders.append({'currency': currency, 'count': count,
@@ -26,10 +26,10 @@ class Portfolio:
         self.bankroll -= count * value
         self.order_id += 1
 
-        if currency in self.stocks.keys():
-            self.stocks[currency]['count'] += count
+        if currency in self.coins.keys():
+            self.coins[currency]['count'] += count
         else:
-            self.stocks[currency] = {'count': count}
+            self.coins[currency] = {'count': count}
 
         return 0
 
@@ -42,7 +42,7 @@ class Portfolio:
         self.closed_orders.append(closed_order)
 
         self.bankroll += sell_price
-        self.stocks[closed_order['currency']]['count'] -= closed_order['count']
+        self.coins[closed_order['currency']]['count'] -= closed_order['count']
         return sell_price - closed_order['buy_price']
 
     def check_balance(self, value):
@@ -52,4 +52,4 @@ class Portfolio:
         return self.money_at_start - self.bankroll
 
     def __str__(self):
-        return f"Stocks: {self.stocks}\nBankroll: {self.bankroll}\nCurrent profit {self.get_profit()}"
+        return f"Stocks: {self.coins}\nBankroll: {self.bankroll}\nCurrent profit {self.get_profit()}"
